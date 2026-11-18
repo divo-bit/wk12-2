@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leo's Yellow Hat - 초등 3학년 영어 그림책 읽기 및 이해 학습</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    }
+
+    body {
+      background-color: #f4f7fb;
+      color: #222831;
+      padding: 20px 14px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* 상단 헤더 */
+    .header {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 18px 22px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-left: 8px solid #ff9f1c;
+    }
+
+    .header h1 {
+      font-size: 1.32rem;
+      color: #1d3557;
+      font-weight: 800;
+    }
+
+    .header p {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-top: 2px;
+    }
+
+    .badge {
+      background: #fff3cd;
+      color: #b45309;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    /* 상단 3단계 학습 탭 메뉴 */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      background: #ffffff;
+      border: 2px solid #dee2e6;
+      border-radius: 16px;
+      padding: 14px 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #495057;
+      cursor: pointer;
+    }
+
+    .tab-btn:hover {
+      background: #f8f9fa;
+    }
+
+    .tab-btn.active {
+      background: #1d3557;
+      color: #ffffff;
+      border-color: #1d3557;
+    }
+
+    /* 메인 콘텐츠 카드 */
+    .card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+      display: none;
+    }
+
+    .card.active {
+      display: block;
+    }
+
+    /* [탭 1] 이야기 읽기 스타일 */
+    .scene-nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .scene-num-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid #ced4da;
+      background: #ffffff;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #495057;
+      cursor: pointer;
+    }
+
+    .scene-num-btn.active {
+      background: #ff9f1c;
+      border-color: #ff9f1c;
+      color: #ffffff;
+    }
+
+    .scene-num-btn.read-done {
+      border-color: #2ec4b6;
+      background: #e0fbf8;
+      color: #006d77;
+    }
+
+    .scene-num-btn.active.read-done {
+      background: #2ec4b6;
+      color: #ffffff;
+    }
+
+    .scene-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .scene-tag {
+      background: #e0fbfc;
+      color: #006d77;
+      font-weight: 800;
+      padding: 5px 14px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+    }
+
+    /* 개별 장면 이미지 표시 영역 (L1 ~ L5) */
+    .picture-frame {
+      width: 100%;
+      height: 290px;
+      border-radius: 18px;
+      border: 3px solid #dee2e6;
+      margin-bottom: 16px;
+      overflow: hidden;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
+
+    .picture-frame img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .error-guide {
+      padding: 18px;
+      text-align: center;
+      font-size: 0.92rem;
+      color: #495057;
+      line-height: 1.6;
+    }
+
+    .story-box {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 18px;
+      padding: 20px 18px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .en-text {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #1d3557;
+      margin-bottom: 8px;
+      word-break: keep-all;
+    }
+
+    .word-span {
+      display: inline-block;
+      padding: 2px 5px;
+      margin: 0 2px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .word-span:hover {
+      background: #ffe8a3;
+    }
+
+    .word-span.matched {
+      background: #d3f9d8;
+      color: #2b8a3e;
+    }
+
+    .ko-text {
+      font-size: 1.1rem;
+      color: #495057;
+      font-weight: 600;
+      padding-top: 10px;
+      border-top: 1px dashed #ced4da;
+      display: none;
+    }
+
+    .ko-text.show {
+      display: block;
+    }
+
+    /* 듣기 버튼 바 */
+    .audio-bar {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .btn-listen {
+      background: #4ea8de;
+      color: #ffffff;
+    }
+
+    .btn-slow {
+      background: #90be6d;
+      color: #ffffff;
+    }
+
+    /* 소리 내어 읽기 활동 영역 */
+    .speaking-box {
+      background: #fff4e6;
+      border: 2px solid #ffd8a8;
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .speaking-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #d9480f;
+      margin-bottom: 10px;
+    }
+
+    .speaking-btns {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-mic {
+      background: #ff595e;
+      color: #ffffff;
+      border: none;
+      border-radius: 14px;
+      padding: 11px 20px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-mic.recording {
+      background: #c92a2a;
+    }
+
+    .btn-self-done {
+      background: #ffffff;
+      color: #2b2d42;
+      border: 2px solid #adb5bd;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-self-done:hover {
+      background: #f1f3f5;
+    }
+
+    .speak-result {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #495057;
+      min-height: 24px;
+    }
+
+    .speak-badge-ok {
+      display: inline-block;
+      background: #d3f9d8;
+      color: #2b8a3e;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 10px;
+      margin-top: 4px;
+    }
+
+    .speak-badge-try {
+      display: inline-block;
+      background: #fff3bf;
+      color: #e67700;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 10px;
+      margin-top: 4px;
+    }
+
+    .vocab-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .vocab-item {
+      background: #eef6ff;
+      border: 1.5px solid #bdd9ff;
+      color: #1e6091;
+      padding: 8px 14px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .vocab-item:hover {
+      background: #dcebff;
+    }
+
+    .action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-meaning {
+      background: #ff9f1c;
+      color: #ffffff;
+    }
+
+    .btn-nav {
+      background: #2b2d42;
+      color: #ffffff;
+    }
+
+    /* [탭 2] 내용 이해 퀴즈 스타일 */
+    .quiz-progress {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #6c757d;
+      margin-bottom: 10px;
+    }
+
+    .quiz-question {
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: #1d3557;
+      background: #f8f9fa;
+      padding: 18px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      border-left: 6px solid #4ea8de;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .option-btn {
+      text-align: left;
+      background: #ffffff;
+      border: 2px solid #dee2e6;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #2b2d42;
+      cursor: pointer;
+    }
+
+    .option-btn:hover {
+      background: #f1f3f5;
+    }
+
+    .option-btn.correct {
+      background: #d3f9d8;
+      border-color: #2b8a3e;
+      color: #2b8a3e;
+    }
+
+    .option-btn.wrong {
+      background: #ffe3e3;
+      border-color: #c92a2a;
+      color: #c92a2a;
+    }
+
+    .quiz-feedback {
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .quiz-feedback.show {
+      display: block;
+    }
+
+    .quiz-feedback.ok {
+      background: #d3f9d8;
+      color: #2b8a3e;
+    }
+
+    .quiz-feedback.no {
+      background: #fff3bf;
+      color: #d9480f;
+    }
+
+    /* [탭 3] 이야기 순서 맞추기 스타일 */
+    .seq-guide {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1d3557;
+      margin-bottom: 14px;
+    }
+
+    .seq-slots {
+      background: #f8f9fa;
+      border: 2px dashed #adb5bd;
+      border-radius: 16px;
+      padding: 14px;
+      min-height: 120px;
+      margin-bottom: 18px;
+    }
+
+    .seq-slot-item {
+      background: #e0fbfc;
+      border: 2px solid #2ec4b6;
+      color: #005f73;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .seq-pool {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .pool-btn {
+      text-align: left;
+      background: #ffffff;
+      border: 2px solid #ced4da;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #2b2d42;
+      cursor: pointer;
+    }
+
+    .pool-btn:hover {
+      background: #fff9db;
+      border-color: #ff9f1c;
+    }
+
+    .pool-btn.used {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .tabs {
+        grid-template-columns: 1fr;
+      }
+      .audio-bar {
+        grid-template-columns: 1fr;
+      }
+      .en-text {
+        font-size: 1.32rem;
+      }
+      .picture-frame {
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 헤더 -->
+    <div class="header">
+      <div>
+        <h1>📖 Leo's Yellow Hat (레오의 노란 모자)</h1>
+        <p>초등 3학년 영어 그림책 읽기 · 말하기 · 이해 학습</p>
+      </div>
+      <div class="badge" id="readScoreBadge">읽기 완료: 0 / 5</div>
+    </div>
+
+    <!-- 3단계 탭 -->
+    <div class="tabs">
+      <button type="button" class="tab-btn active" id="tabBtn-0" onclick="switchTab(0)">1. 그림책 읽기·말하기</button>
+      <button type="button" class="tab-btn" id="tabBtn-1" onclick="switchTab(1)">2. 내용 이해 퀴즈</button>
+      <button type="button" class="tab-btn" id="tabBtn-2" onclick="switchTab(2)">3. 순서 맞추기</button>
+    </div>
+
+    <!-- [1단계] 이야기 읽기 및 소리 내어 읽기 -->
+    <div class="card active" id="tab-0">
+      <div class="scene-nav" id="sceneNav"></div>
+
+      <div class="scene-header">
+        <span class="scene-tag" id="sceneTag">장면 1 / 5</span>
+        <button type="button" class="btn btn-meaning" id="meaningBtn" onclick="toggleMeaning()">💡 우리말 해석 보기</button>
+      </div>
+
+      <!-- asset/L1 ~ L5 개별 그림 표시 영역 -->
+      <div class="picture-frame" id="pictureFrame"></div>
+
+      <!-- 문장 및 해석 -->
+      <div class="story-box">
+        <div class="en-text" id="enText"></div>
+        <div class="ko-text" id="koText"></div>
+      </div>
+
+      <!-- 원어민 듣기 버튼 -->
+      <div class="audio-bar">
+        <button type="button" class="btn btn-listen" onclick="speakCurrentSentence(0.92)">🔊 문장 듣기</button>
+        <button type="button" class="btn btn-slow" onclick="speakCurrentSentence(0.65)">🐢 천천히 듣기</button>
+      </div>
+
+      <!-- 소리 내어 읽기(말하기) 영역 -->
+      <div class="speaking-box">
+        <div class="speaking-title">🎤 문장을 소리 내어 읽어보세요!</div>
+        <div class="speaking-btns">
+          <button type="button" class="btn-mic" id="micBtn" onclick="toggleSpeechRecognition()">
+            🎙️ <span id="micBtnLabel">소리 내어 읽기</span>
+          </button>
+          <button type="button" class="btn-self-done" onclick="markSelfReadDone()">
+            ✅ 따라 읽었어요! (완료 표시)
+          </button>
+        </div>
+        <div class="speak-result" id="speakResult">
+          단어를 클릭하면 개별 발음도 들을 수 있어요!
+        </div>
+      </div>
+
+      <!-- 핵심 단어 -->
+      <div class="vocab-list" id="vocabList"></div>
+
+      <!-- 이전 / 다음 이동 -->
+      <div class="action-row">
+        <button type="button" class="btn btn-nav" id="prevSceneBtn" onclick="changeScene(-1)">◀ 이전 장면</button>
+        <button type="button" class="btn btn-nav" id="nextSceneBtn" onclick="changeScene(1)">다음 장면 ▶</button>
+      </div>
+    </div>
+
+    <!-- [2단계] 내용 이해 퀴즈 -->
+    <div class="card" id="tab-1">
+      <div class="quiz-progress" id="quizProgress">문제 1 / 5 (맞힌 개수: 0개)</div>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="action-row">
+        <button type="button" class="btn btn-meaning" onclick="resetQuiz()">🔄 퀴즈 처음부터</button>
+        <button type="button" class="btn btn-nav" id="nextQuizBtn" onclick="nextQuiz()" disabled>다음 문제 ▶</button>
+      </div>
+    </div>
+
+    <!-- [3단계] 이야기 순서 맞추기 -->
+    <div class="card" id="tab-2">
+      <div class="seq-guide">이야기의 순서대로 아래 문장 카드를 차례대로 클릭해 보세요!</div>
+      <div class="seq-slots" id="seqSlots">
+        <div style="color:#868e96; font-size:0.95rem;">여기에 선택한 순서대로 문장이 쌓입니다. (가장 먼저 일어난 일부터 선택하세요)</div>
+      </div>
+      <div class="quiz-feedback" id="seqFeedback"></div>
+      <div class="seq-pool" id="seqPool"></div>
+      <div class="action-row">
+        <button type="button" class="btn btn-meaning" onclick="initSequenceGame()">🔄 다시 섞기</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 캡처하신 5개의 개별 장면 데이터 (L1.JPG ~ L5.JPG)
+    var scenes = [
+      {
+        baseName: "L1",
+        en: "It is a sunny morning. Leo is happy.",
+        ko: "화창한 아침이에요. 레오는 행복해요.",
+        vocab: [
+          { w: "sunny", m: "화창한, 맑은" },
+          { w: "morning", m: "아침" },
+          { w: "happy", m: "행복한" }
+        ]
+      },
+      {
+        baseName: "L2",
+        en: "Suddenly, it is windy. Oh no! Leo's hat is flying.",
+        ko: "갑자기 바람이 불어요. 오 이런! 레오의 모자가 날아가고 있어요.",
+        vocab: [
+          { w: "Suddenly", m: "갑자기" },
+          { w: "windy", m: "바람이 부는" },
+          { w: "flying", m: "날아가는" }
+        ]
+      },
+      {
+        baseName: "L3",
+        en: "It is rainy now. Leo is under the tree. He is sad.",
+        ko: "이제 비가 내려요. 레오는 나무 아래에 있어요. 그는 슬퍼요.",
+        vocab: [
+          { w: "rainy", m: "비가 오는" },
+          { w: "under", m: "~의 아래에" },
+          { w: "sad", m: "슬픈" }
+        ]
+      },
+      {
+        baseName: "L4",
+        en: "The rain stops. It is cloudy. Leo finds his hat.",
+        ko: "비가 그쳐요. 날씨가 흐려요. 레오는 그의 모자를 찾아요.",
+        vocab: [
+          { w: "stops", m: "멈추다, 그치다" },
+          { w: "cloudy", m: "흐린" },
+          { w: "finds", m: "찾다, 발견하다" }
+        ]
+      },
+      {
+        baseName: "L5",
+        en: "Leo is happy again. He is at school.",
+        ko: "레오는 다시 행복해요. 그는 학교에 있어요.",
+        vocab: [
+          { w: "happy", m: "행복한" },
+          { w: "again", m: "다시" },
+          { w: "at school", m: "학교에" }
+        ]
+      }
+    ];
+
+    // 5장면 내용 이해 확인 퀴즈 데이터
+    var quizzes = [
+      {
+        q: "1. 아침 날씨는 어떠했나요? (It is a sunny morning.)",
+        options: ["① 비가 내렸다 (rainy)", "② 화창했다 (sunny)", "③ 흐렸다 (cloudy)"],
+        answer: 1,
+        explain: "정답은 ②번입니다! 'sunny morning'은 화창한 아침이라는 뜻이에요."
+      },
+      {
+        q: "2. 갑자기 바람이 불자 어떤 일이 일어났나요?",
+        options: ["① 레오의 가방이 열렸다", "② 레오의 모자가 날아갔다 (Leo's hat is flying)", "③ 레오가 집으로 돌아갔다"],
+        answer: 1,
+        explain: "정답은 ②번입니다! 바람이 불어서 레오의 노란 모자가 날아갔어요."
+      },
+      {
+        q: "3. 비가 올 때 레오는 어디에 있었나요?",
+        options: ["① 나무 아래 (under the tree)", "② 집 안 (in the house)", "③ 벤치 위 (on the bench)"],
+        answer: 0,
+        explain: "정답은 ①번입니다! 'Leo is under the tree.'는 레오가 나무 아래에 있다는 뜻이에요."
+      },
+      {
+        q: "4. 비가 그친 뒤 레오는 무엇을 찾았나요? (Leo finds his hat.)",
+        options: ["① 책가방 (bag)", "② 우산 (umbrella)", "③ 모자 (hat)"],
+        answer: 2,
+        explain: "정답은 ③번입니다! 비가 그친 뒤 벤치 옆에서 노란 모자(hat)를 찾았어요."
+      },
+      {
+        q: "5. 모자를 다시 찾은 레오는 마지막에 어디에 있나요? (He is at school.)",
+        options: ["① 공원 (park)", "② 학교 (school)", "③ 도서관 (library)"],
+        answer: 1,
+        explain: "정답은 ②번입니다! 'Leo is happy again. He is at school.' 레오는 무사히 학교에 도착했어요."
+      }
+    ];
+
+    var currentScene = 0;
+    var showMeaning = false;
+    var readCompleted = [false, false, false, false, false];
+    var isRecording = false;
+    var recognition = null;
+
+    var currentQuiz = 0;
+    var quizScore = 0;
+    var quizAnswered = false;
+    var selectedSequence = [];
+    var shuffledOrder = [];
+
+    // 음성 듣기 (TTS) - 안전한 예외 처리 적용
+    function speakText(text, rate) {
+      try {
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.cancel();
+          var utter = new SpeechSynthesisUtterance(text);
+          utter.lang = "en-US";
+          utter.rate = rate || 0.9;
+          window.speechSynthesis.speak(utter);
+        } else {
+          document.getElementById("speakResult").innerHTML =
+            '<span class="speak-badge-try">이 브라우저는 자동 음성 재생을 지원하지 않습니다.</span>';
+        }
+      } catch (e) {
+        document.getElementById("speakResult").innerHTML =
+          '<span class="speak-badge-try">음성을 재생할 수 없는 환경입니다. 문장을 직접 소리 내어 읽어보세요!</span>';
+      }
+    }
+
+    function speakCurrentSentence(rate) {
+      speakText(scenes[currentScene].en, rate);
+    }
+
+    // 소리 내어 읽기 (음성 인식 STT)
+    function normalizeWords(str) {
+      return str.toLowerCase().replace(/[^a-z0-9\s]/g, "").trim();
+    }
+
+    function toggleSpeechRecognition() {
+      var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      var resultEl = document.getElementById("speakResult");
+      var micBtn = document.getElementById("micBtn");
+      var micLabel = document.getElementById("micBtnLabel");
+
+      if (!SpeechRec) {
+        resultEl.innerHTML =
+          '<span class="speak-badge-try">이 브라우저에서는 자동 마이크 인식이 지원되지 않아요. 큰 소리로 읽은 뒤 오른쪽 [따라 읽었어요!] 버튼을 눌러주세요.</span>';
+        return;
+      }
+
+      if (isRecording && recognition) {
+        try { recognition.stop(); } catch (e) {}
+        return;
+      }
+
+      try {
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+
+        recognition = new SpeechRec();
+        recognition.lang = "en-US";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = function () {
+          isRecording = true;
+          micBtn.classList.add("recording");
+          micLabel.innerHTML = "듣고 있어요... 읽어보세요!";
+          resultEl.innerHTML = '<b style="color:#d9480f;">🎙️ 지금 영어로 크게 읽어주세요!</b>';
+        };
+
+        recognition.onresult = function (event) {
+          var spoken = event.results[0][0].transcript;
+          var targetWords = normalizeWords(scenes[currentScene].en).split(/\s+/);
+          var spokenWords = normalizeWords(spoken).split(/\s+/);
+          var spans = document.querySelectorAll(".word-span");
+          var matchCount = 0;
+
+          for (var i = 0; i < targetWords.length; i++) {
+            if (spokenWords.indexOf(targetWords[i]) !== -1) {
+              matchCount++;
+              if (spans[i]) spans[i].classList.add("matched");
+            }
+          }
+
+          var ratio = matchCount / targetWords.length;
+          if (ratio >= 0.6) {
+            readCompleted[currentScene] = true;
+            updateReadScore();
+            resultEl.innerHTML =
+              '<div>내가 읽은 문장: "<i>' + spoken + '</i>"</div>' +
+              '<div class="speak-badge-ok">🌟 정말 잘 읽었어요! (정확도 ' + Math.round(ratio * 100) + '%)</div>';
+          } else {
+            resultEl.innerHTML =
+              '<div>내가 읽은 문장: "<i>' + spoken + '</i>"</div>' +
+              '<div class="speak-badge-try">💪 조금만 더 힘내요! [문장 듣기]를 듣고 다시 읽어볼까요?</div>';
+          }
+        };
+
+        recognition.onerror = function () {
+          isRecording = false;
+          micBtn.classList.remove("recording");
+          micLabel.innerHTML = "소리 내어 읽기";
+          resultEl.innerHTML =
+            '<span class="speak-badge-try">마이크 권한이 차단되었거나 소리가 들리지 않았어요. [따라 읽었어요!] 버튼을 눌러 완료할 수 있어요!</span>';
+        };
+
+        recognition.onend = function () {
+          isRecording = false;
+          micBtn.classList.remove("recording");
+          micLabel.innerHTML = "소리 내어 읽기";
+        };
+
+        recognition.start();
+      } catch (err) {
+        isRecording = false;
+        micBtn.classList.remove("recording");
+        micLabel.innerHTML = "소리 내어 읽기";
+        resultEl.innerHTML =
+          '<span class="speak-badge-try">마이크를 실행할 수 없어요. 큰 소리로 읽은 뒤 [따라 읽었어요!] 버튼을 눌러주세요.</span>';
+      }
+    }
+
+    function markSelfReadDone() {
+      readCompleted[currentScene] = true;
+      updateReadScore();
+      document.getElementById("speakResult").innerHTML =
+        '<span class="speak-badge-ok">⭐ 스스로 소리 내어 읽기 완료! 참 잘했어요!</span>';
+    }
+
+    function updateReadScore() {
+      var count = 0;
+      for (var i = 0; i < readCompleted.length; i++) {
+        if (readCompleted[i]) count++;
+      }
+      document.getElementById("readScoreBadge").innerHTML = "읽기 완료: " + count + " / " + scenes.length;
+      renderSceneNav();
+    }
+
+    // 상단 탭 전환
+    function switchTab(tabIndex) {
+      for (var i = 0; i < 3; i++) {
+        var card = document.getElementById("tab-" + i);
+        var btn = document.getElementById("tabBtn-" + i);
+        if (i === tabIndex) {
+          card.classList.add("active");
+          btn.classList.add("active");
+        } else {
+          card.classList.remove("active");
+          btn.classList.remove("active");
+        }
+      }
+    }
+
+    // asset/L1.JPG ~ L5.JPG 이미지 로드
+    function renderPicture(sceneIndex) {
+      var frame = document.getElementById("pictureFrame");
+      var base = scenes[sceneIndex].baseName;
+      var candidates = [
+        "asset/" + base + ".JPG",
+        "asset/" + base + ".jpg",
+        "asset/" + base + ".png",
+        "asset/" + base + ".PNG",
+        "asset/" + base + ".jpeg"
+      ];
+      tryLoadImage(frame, sceneIndex, candidates, 0);
+    }
+
+    function tryLoadImage(frame, sceneIndex, list, idx) {
+      if (idx >= list.length) {
+        var base = scenes[sceneIndex].baseName;
+        frame.innerHTML =
+          '<div class="error-guide">' +
+            '<b>🖼️ asset/' + base + '.JPG 이미지를 불러올 수 없습니다.</b><br>' +
+            'HTML 파일과 같은 위치의 <code>asset</code> 폴더 안에<br>' +
+            '<code>' + base + '.JPG</code> 파일이 들어 있는지 확인해 주세요.' +
+          '</div>';
+        return;
+      }
+
+      var img = document.createElement("img");
+      img.alt = "장면 " + (sceneIndex + 1);
+      img.onerror = function () {
+        tryLoadImage(frame, sceneIndex, list, idx + 1);
+      };
+      img.src = list[idx];
+
+      frame.innerHTML = "";
+      frame.appendChild(img);
+    }
+
+    function renderSceneNav() {
+      var navHtml = "";
+      for (var i = 0; i < scenes.length; i++) {
+        var classes = "scene-num-btn";
+        if (i === currentScene) classes += " active";
+        if (readCompleted[i]) classes += " read-done";
+        var label = readCompleted[i] ? "★" : (i + 1);
+        navHtml += '<button type="button" class="' + classes + '" onclick="goScene(' + i + ')">' + label + '</button>';
+      }
+      document.getElementById("sceneNav").innerHTML = navHtml;
+    }
+
+    // [1단계] 이야기 읽기 렌더링
+    function renderStory() {
+      try {
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      } catch (e) {}
+
+      renderSceneNav();
+
+      var s = scenes[currentScene];
+      document.getElementById("sceneTag").innerHTML = "장면 " + (currentScene + 1) + " / " + scenes.length;
+
+      renderPicture(currentScene);
+
+      // 단어별 클릭 발음 지원 문장 생성
+      var words = s.en.split(" ");
+      var enHtml = "";
+      for (var w = 0; w < words.length; w++) {
+        var safeW = words[w].replace(/'/g, "\\'");
+        enHtml += '<span class="word-span" onclick="speakText(\'' + safeW + '\', 0.85)">' + words[w] + '</span> ';
+      }
+      document.getElementById("enText").innerHTML = enHtml;
+
+      var koEl = document.getElementById("koText");
+      koEl.innerHTML = s.ko;
+      if (showMeaning) {
+        koEl.classList.add("show");
+      } else {
+        koEl.classList.remove("show");
+      }
+
+      document.getElementById("speakResult").innerHTML = "단어를 클릭하면 개별 발음도 들을 수 있어요!";
+
+      var vHtml = "";
+      for (var j = 0; j < s.vocab.length; j++) {
+        var vw = s.vocab[j].w.replace(/'/g, "\\'");
+        vHtml += '<div class="vocab-item" onclick="speakText(\'' + vw + '\', 0.85)">📘 ' + s.vocab[j].w + ' : ' + s.vocab[j].m + '</div>';
+      }
+      document.getElementById("vocabList").innerHTML = vHtml;
+
+      document.getElementById("prevSceneBtn").disabled = (currentScene === 0);
+      document.getElementById("nextSceneBtn").disabled = (currentScene === scenes.length - 1);
+    }
+
+    function goScene(index) {
+      currentScene = index;
+      renderStory();
+    }
+
+    function changeScene(step) {
+      var next = currentScene + step;
+      if (next >= 0 && next < scenes.length) {
+        currentScene = next;
+        renderStory();
+      }
+    }
+
+    function toggleMeaning() {
+      showMeaning = !showMeaning;
+      var btn = document.getElementById("meaningBtn");
+      btn.innerHTML = showMeaning ? "🙈 우리말 해석 숨기기" : "💡 우리말 해석 보기";
+      renderStory();
+    }
+
+    // [2단계] 내용 이해 퀴즈 렌더링
+    function renderQuiz() {
+      quizAnswered = false;
+      var qData = quizzes[currentQuiz];
+      document.getElementById("quizProgress").innerHTML =
+        "문제 " + (currentQuiz + 1) + " / " + quizzes.length + " (현재 맞힌 개수: " + quizScore + "개)";
+      document.getElementById("quizQuestion").innerHTML = qData.q;
+
+      var optHtml = "";
+      for (var i = 0; i < qData.options.length; i++) {
+        optHtml += '<button type="button" class="option-btn" id="opt-' + i + '" onclick="checkQuiz(' + i + ')">' + qData.options[i] + '</button>';
+      }
+      document.getElementById("quizOptions").innerHTML = optHtml;
+
+      var fb = document.getElementById("quizFeedback");
+      fb.className = "quiz-feedback";
+      fb.innerHTML = "";
+
+      var nextBtn = document.getElementById("nextQuizBtn");
+      nextBtn.disabled = true;
+      nextBtn.innerHTML = (currentQuiz === quizzes.length - 1) ? "결과 보기 🎉" : "다음 문제 ▶";
+    }
+
+    function checkQuiz(choiceIndex) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+
+      var qData = quizzes[currentQuiz];
+      var fb = document.getElementById("quizFeedback");
+      var chosenBtn = document.getElementById("opt-" + choiceIndex);
+      var correctBtn = document.getElementById("opt-" + qData.answer);
+
+      if (choiceIndex === qData.answer) {
+        quizScore++;
+        chosenBtn.classList.add("correct");
+        fb.className = "quiz-feedback show ok";
+        fb.innerHTML = "⭕ " + qData.explain;
+      } else {
+        chosenBtn.classList.add("wrong");
+        correctBtn.classList.add("correct");
+        fb.className = "quiz-feedback show no";
+        fb.innerHTML = "❌ 아쉬워요! " + qData.explain;
+      }
+
+      document.getElementById("quizProgress").innerHTML =
+        "문제 " + (currentQuiz + 1) + " / " + quizzes.length + " (현재 맞힌 개수: " + quizScore + "개)";
+      document.getElementById("nextQuizBtn").disabled = false;
+    }
+
+    function nextQuiz() {
+      if (currentQuiz < quizzes.length - 1) {
+        currentQuiz++;
+        renderQuiz();
+      } else {
+        document.getElementById("quizQuestion").innerHTML =
+          "🎉 퀴즈 완료! 총 " + quizzes.length + "문제 중 " + quizScore + "문제를 맞혔어요!";
+        document.getElementById("quizOptions").innerHTML = "";
+        var fb = document.getElementById("quizFeedback");
+        fb.className = "quiz-feedback show ok";
+        fb.innerHTML = "이야기의 내용을 아주 잘 이해했네요! '3. 순서 맞추기' 탭에도 도전해 보세요.";
+        document.getElementById("nextQuizBtn").disabled = true;
+      }
+    }
+
+    function resetQuiz() {
+      currentQuiz = 0;
+      quizScore = 0;
+      renderQuiz();
+    }
+
+    // [3단계] 이야기 순서 맞추기 게임 (5장면)
+    function initSequenceGame() {
+      selectedSequence = [];
+      shuffledOrder = [0, 1, 2, 3, 4];
+
+      for (var i = shuffledOrder.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = shuffledOrder[i];
+        shuffledOrder[i] = shuffledOrder[j];
+        shuffledOrder[j] = temp;
+      }
+
+      var fb = document.getElementById("seqFeedback");
+      fb.className = "quiz-feedback";
+      fb.innerHTML = "";
+
+      renderSequence();
+    }
+
+    function renderSequence() {
+      var slotsEl = document.getElementById("seqSlots");
+      if (selectedSequence.length === 0) {
+        slotsEl.innerHTML = '<div style="color:#868e96; font-size:0.95rem;">여기에 선택한 순서대로 문장이 쌓입니다. (가장 먼저 일어난 일부터 선택하세요)</div>';
+      } else {
+        var slotHtml = "";
+        for (var i = 0; i < selectedSequence.length; i++) {
+          var sIdx = selectedSequence[i];
+          slotHtml += '<div class="seq-slot-item">' + (i + 1) + '번째: ' + scenes[sIdx].en + ' <span style="font-size:0.88rem; color:#495057;">(' + scenes[sIdx].ko + ')</span></div>';
+        }
+        slotsEl.innerHTML = slotHtml;
+      }
+
+      var poolEl = document.getElementById("seqPool");
+      var poolHtml = "";
+      for (var k = 0; k < shuffledOrder.length; k++) {
+        var sceneIdx = shuffledOrder[k];
+        var isUsed = (selectedSequence.indexOf(sceneIdx) !== -1);
+        var usedClass = isUsed ? " used" : "";
+        poolHtml += '<button type="button" class="pool-btn' + usedClass + '" onclick="pickSequence(' + sceneIdx + ')">' + scenes[sceneIdx].en + '</button>';
+      }
+      poolEl.innerHTML = poolHtml;
+    }
+
+    function pickSequence(sceneIdx) {
+      var expectedIdx = selectedSequence.length;
+      var fb = document.getElementById("seqFeedback");
+
+      if (sceneIdx === expectedIdx) {
+        selectedSequence.push(sceneIdx);
+        renderSequence();
+
+        if (selectedSequence.length === scenes.length) {
+          fb.className = "quiz-feedback show ok";
+          fb.innerHTML = "🎉 완벽해요! 레오의 노란 모자 이야기를 처음부터 끝까지 올바른 순서로 모두 맞혔어요!";
+        } else {
+          fb.className = "quiz-feedback show ok";
+          fb.innerHTML = "⭕ 맞았어요! 다음에는 어떤 일이 일어났을까요?";
+        }
+      } else {
+        fb.className = "quiz-feedback show no";
+        fb.innerHTML = "❌ 순서가 조금 달라요! '1. 그림책 읽기·말하기'에서 순서를 떠올리고 다시 골라보세요.";
+      }
+    }
+
+    // 초기 화면 구성 실행
+    renderStory();
+    renderQuiz();
+    initSequenceGame();
+  </script>
+</body>
+</html>
